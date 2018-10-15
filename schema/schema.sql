@@ -1,7 +1,6 @@
 DROP TABLE userPurchases;
 DROP TABLE recipeLists;
 DROP TABLE recipes; 
-DROP TABLE recipeLists;
 DROP TABLE items; 
 DROP TABLE users;  
 
