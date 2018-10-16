@@ -17,7 +17,19 @@ router.get('/',(req,res,next)=>{
 
 router.post('/',(req,res,next)=>{
   console.log('hoi ', req.body)
-  res.send(req.body)
+  
+  const sql = `Insert ignore into items (name) values ?`
+  const values = req.body.data.map(eachItem=>{
+    return [eachItem.name]
+  })
+  pool.query(sql, [values], (err, results)=>{
+    if(err) next(err)
+    else{
+      console.log('what does this look like ?', results)
+      res.json(results)
+    }
+  })
+
 })
 
 module.exports=router
