@@ -1,1 +1,0 @@
-CREATE TABLE items (name VARCHAR(255));
