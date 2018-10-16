@@ -1,5 +1,5 @@
 const app = require('express')()
-const groceriesRoutes = require('./groceriesRoutes')
+const groceriesRoutes = require('./api/groceriesRoutes')
 const pool = require('./db')
 const PORT = 1337
 const bodyParser = require('body-parser')
@@ -21,9 +21,3 @@ app.use((req, res, next) => {
 })
 
 app.listen(PORT)
-
-// connection.connect(err=>{
-//   if (err) throw err;
-  
-// })
-

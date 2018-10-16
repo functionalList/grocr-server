@@ -1,4 +1,4 @@
-const pool = require('./db')
+const pool = require('../db')
 const router = require('express')()
 
 router.get('/',(req,res,next)=>{
