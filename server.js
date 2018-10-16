@@ -1,5 +1,6 @@
 const app = require('express')()
 const groceriesRoutes = require('./groceriesRoutes')
+const usersRoutes = require('./usersRoutes')
 const pool = require('./db')
 const PORT = 1337
 const bodyParser = require('body-parser')
@@ -13,6 +14,7 @@ app.use(bodyParser.json())
 app.use(require('morgan')('dev'))
 
 app.use('/groceries', groceriesRoutes)
+app.use('/users', usersRoutes)
 
 app.use((req, res, next) => {
   const error = new Error('Not Found')
