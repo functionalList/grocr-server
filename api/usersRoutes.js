@@ -1,6 +1,8 @@
 const pool = require('../db')
 const router = require('express')()
 
+
+//SQL TIP: This is a findOrCreate
 router.post('/',(req,res,next)=>{
   
   const username = req.body.username;
