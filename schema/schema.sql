@@ -28,13 +28,14 @@ Create Table recipes (
   name VARCHAR(255) NOT NULL, 
   creatorID int NOT NULL,
   Primary Key (ID),
-  FOREIGN KEY (creatorID) REFERENCES users (ID)
+  FOREIGN KEY (creatorID) REFERENCES users (ID),
+  CONSTRAINT usersownRecipe UNIQUE (name, creatorID)
 );
 
 Create Table recipeLists (
   recipeID int not null,
   itemID int not null,
-  PRIMARY KEY (recipeID, itemID),
+  CONSTRAINT PRIMARY KEY (recipeID, itemID),
   FOREIGN KEY (recipeID) REFERENCES recipes (ID),
   FOREIGN KEY (itemID) REFERENCES items (ID)
 );

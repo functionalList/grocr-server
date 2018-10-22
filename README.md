@@ -1,4 +1,4 @@
-#Seed database
+# Seed database
 
 Open up mysql connection
 ```
