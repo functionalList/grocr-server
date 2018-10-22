@@ -1,17 +1,32 @@
 const pool = require('../db')
 const router = require('express')()
 
-router.get('/:userId',(req, res, next)=>{
-  const sql = `Select recipes.name as 'recipeName', GROUP_CONCAT(items.name) as 'ingredients' from recipes 
-  join recipeLists on recipes.id = recipeLists.recipeID
-  join items on items.id = recipeLists.itemID 
-  where recipes.creatorID = ?
-  group by recipes.id`
 
-  pool.query(sql, [req.params.userId], (err, results)=>{
+router.get('/:userName',(req, res, next)=>{
+  const getUsersRecipes = `Select recipes.name, recipes.id from users
+  join recipes on recipes.creatorid = users.id
+  where users.name = ?`
+
+  pool.query(getUsersRecipes, [req.params.userName], (err, results)=>{
     if(err) next(err)
     else {
-      console.log('recip ', results)
+      res.json(results)
+    }
+  })
+})
+
+router.get('/:userID/:recipeID', (req, res, next)=>{
+  const viewRecipe = `Select recipes.name as 'recipeName', users.name as 'creator', GROUP_CONCAT(items.name) as 'ingredients' from recipes 
+  Join recipeLists on recipes.id = recipeLists.recipeID
+  Join items on items.ID = recipeLists.itemID
+  Join users on users.ID = recipes.creatorID
+  Where recipes.creatorID = ? and recipes.ID = ?
+  Group by recipes.id`
+
+  pool.query(viewRecipe, [req.params.userID, req.params.recipeID], (err, results)=>{
+    if(err) next(err)
+    else {
+      console.log(results)
       res.json(results)
     }
   })
