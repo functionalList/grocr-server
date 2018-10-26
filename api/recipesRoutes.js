@@ -55,7 +55,7 @@ router.post('/', (req,res,next)=>{
           const populateAssociation = `Insert into recipeLists(recipeID, itemID) Select ?, ID from items where name in (?)`
           pool.query(populateAssociation, [ RECIPE_ID ,req.body.ingredients], (err,results)=>{
             if(err) next(err)
-            else res.json(results)
+            else res.json({id: RECIPE_ID})
           })
         }
       }) 
