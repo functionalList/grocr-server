@@ -12,7 +12,7 @@ CREATE TABLE items (
 );
 CREATE TABLE users (
   ID int AUTO_INCREMENT, 
-  name VARCHAR(255) NOT NULL, 
+  name VARCHAR(255) NOT NULL UNIQUE, 
   PRIMARY KEY (ID)
 );
 CREATE TABLE userPurchases (
