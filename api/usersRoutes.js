@@ -7,9 +7,9 @@ router.post('/',(req,res,next)=>{
   
   const username = req.body.username;
 
-  const findOrCreateUser = `Insert ignore into users (name) values (?) Select * from users where name = ?`
+  const findOrCreateUser = `Insert ignore into users (name) values (?) ; Select * from users where name = ?`
 
-  pool.query(findOrCreateUser, [username], (err, results)=>{
+  pool.query(findOrCreateUser, [username, username], (err, results)=>{
     if(err) next(err)
     else {
       res.json(results)
