@@ -1,5 +1,6 @@
 DROP TABLE userPurchases;
 DROP TABLE recipeLists;
+DROP TABLE following;
 DROP TABLE recipes; 
 DROP TABLE items; 
 DROP TABLE users;  
@@ -11,7 +12,7 @@ CREATE TABLE items (
 );
 CREATE TABLE users (
   ID int AUTO_INCREMENT, 
-  name VARCHAR(255) NOT NULL, 
+  name VARCHAR(255) NOT NULL UNIQUE, 
   PRIMARY KEY (ID)
 );
 CREATE TABLE userPurchases (
@@ -21,6 +22,15 @@ CREATE TABLE userPurchases (
   PRIMARY KEY (itemID, userID),
   FOREIGN KEY (itemID) REFERENCES items (ID),
   FOREIGN KEY (userID) REFERENCES users (ID)
+);
+
+Create Table following (
+  followerID int NOT NULL,
+  creatorID int NOT NULL,
+  PRIMARY KEY (followerID, creatorID),
+  FOREIGN KEY (followerID) REFERENCES users (ID),
+  FOREIGN KEY (creatorID) REFERENCES users (ID)
+
 );
 
 Create Table recipes (

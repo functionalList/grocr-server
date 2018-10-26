@@ -12,7 +12,6 @@ router.get('/',(req,res,next)=>{
       res.json(results)
     }
   })
-
 })
 
 //SQL TIP: This is an UPSERT
