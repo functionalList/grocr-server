@@ -38,7 +38,7 @@ router.post('/', (req,res,next)=>{
 
   //Insert into recipeLists (recipeID, itemID) values (@recipe, productID);
 
-  const q = pool.query(createNewRecipe, ['lasagne', 2], (err, results)=>{
+  const q = pool.query(createNewRecipe, [req.body.title, req.body.userID], (err, results)=>{
     if(err) next(err)
     else {
       
@@ -46,15 +46,16 @@ router.post('/', (req,res,next)=>{
       
       const insertItems = `Insert ignore into items (name) values ?`
       
-      pool.query(insertItems, [[['san marzano'], ['ricotta']]], (err, results) =>{
+      const formattedIngredients = req.body.ingredients.map((x,i) => [x]);
+
+      pool.query(insertItems, [formattedIngredients], (err, results) =>{
         if(err) next(err)
         else {
 
           const populateAssociation = `Insert into recipeLists(recipeID, itemID) Select ?, ID from items where name in (?)`
-          pool.query(populateAssociation, [ RECIPE_ID ,['san marzano', 'ricotta']], (err,results)=>{
-            
+          pool.query(populateAssociation, [ RECIPE_ID ,req.body.ingredients], (err,results)=>{
             if(err) next(err)
-            else res.json(results)
+            else res.json({id: RECIPE_ID})
           })
         }
       }) 
