@@ -37,6 +37,7 @@ Create Table recipes (
   ID int AUTO_INCREMENT, 
   name VARCHAR(255) NOT NULL, 
   creatorID int NOT NULL,
+  totalAdds int DEFAULT 0,
   Primary Key (ID),
   FOREIGN KEY (creatorID) REFERENCES users (ID),
   CONSTRAINT usersownRecipe UNIQUE (name, creatorID)

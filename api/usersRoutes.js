@@ -7,7 +7,7 @@ router.post('/',(req,res,next)=>{
   
   const username = req.body.username;
 
-  const findOrCreateUser = `Insert ignore into users (name) values (?) ; Select * from users where name = ?`
+  const findOrCreateUser = `Insert ignore into users (name) values (?) ; Select * from users where name = ? Limit 1`
 
   pool.query(findOrCreateUser, [username, username], (err, results)=>{
     if(err) next(err)
@@ -19,11 +19,11 @@ router.post('/',(req,res,next)=>{
 module.exports=router
 
 //follow Someone
-router.post('/follow/:creatorId',(req,res,next)=>{
+router.post('/follow/:creatorName',(req,res,next)=>{
 
-  const follow = `Insert into following values (?)`
+  const follow = `Insert into following Select ?, ID from users where name = ?`
 
-  pool.query(follow, [[1, req.params.creatorId]], (err, results)=>{
+  pool.query(follow, [req.body.followerId, req.params.creatorName], (err, results)=>{
     if(err) next(err)
     else{
       res.sendStatus(200)
@@ -31,8 +31,25 @@ router.post('/follow/:creatorId',(req,res,next)=>{
   })
 })
 
+//get people you follow
+router.get('/friends/:userId', (req,res,next)=>{
+
+  const userId = req.params.userId
+
+  const seeFriends = `Select users.* from following
+  join users on users.id = following.creatorId
+  where following.followerid = ?`
+
+  pool.query(seeFriends, [userId], (err, results)=>{
+    if(err) next(err)
+    else{
+      res.json(results)
+    }
+  })
+})
+
 //get recipes you follow
-router.get('/friends', (req,res,next)=>{
+router.get('/recipes', (req,res,next)=>{
 
   const getRecipes = `Select recipes.* from users
   join following on following.followerId = users.id
