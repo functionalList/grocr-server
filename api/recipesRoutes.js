@@ -3,14 +3,17 @@ const router = require('express')()
 
 
 router.get('/:userName',(req, res, next)=>{
-  const getUsersRecipes = `Select recipes.name, recipes.id from users
-  join recipes on recipes.creatorid = users.id
-  where users.name = ?`
+  const getUsersRecipes = `Select recipes.name as 'recipeName', users.name as 'creator', GROUP_CONCAT(items.name) as ingredients from users 
+  Join recipes on recipes.creatorID = users.ID
+  Join recipeLists on recipes.id = recipeLists.recipeID
+  Join items on items.ID = recipeLists.itemID
+  Where users.name = ?
+  Group by recipes.id`
 
   pool.query(getUsersRecipes, [req.params.userName], (err, results)=>{
     if(err) next(err)
     else {
-      console.log('different recipes ', results)
+      console.log('different recipes ', Object.values(results[0].ingredients))
       res.json(results)
     }
   })
