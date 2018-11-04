@@ -24,8 +24,8 @@ router.get('/:userID/:recipeID', (req, res, next)=>{
   Join recipeLists on recipes.id = recipeLists.recipeID
   Join items on items.ID = recipeLists.itemID
   Join users on users.ID = recipes.creatorID
-  Where recipes.creatorID = ? and recipes.ID = ?
-  Group by recipes.id`
+  Where recipes.creatorID = ? and recipes.ID = ?`
+  //`Group by recipes.id`
 
   pool.query(viewRecipe, [req.params.userID, req.params.recipeID], (err, results)=>{
     if(err) next(err)
