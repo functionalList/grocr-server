@@ -10,6 +10,7 @@ router.get('/:userName',(req, res, next)=>{
   pool.query(getUsersRecipes, [req.params.userName], (err, results)=>{
     if(err) next(err)
     else {
+      console.log('different recipes ', results)
       res.json(results)
     }
   })
