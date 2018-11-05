@@ -49,15 +49,16 @@ router.post('/', (req,res,next)=>{
       const RECIPE_ID = results.insertId
       
       const insertItems = `Insert ignore into items (name) values ?`
-      
-      const formattedIngredients = req.body.ingredients.map((x,i) => [x]);
+  
+      const formattedIngredients = req.body.ingredients.map(ingredient => [ingredient.name]);
+      console.log(formattedIngredients)
 
       pool.query(insertItems, [formattedIngredients], (err, results) =>{
         if(err) next(err)
         else {
 
           const populateAssociation = `Insert into recipeLists(recipeID, itemID) Select ?, ID from items where name in (?)`
-          pool.query(populateAssociation, [ RECIPE_ID ,req.body.ingredients], (err,results)=>{
+          pool.query(populateAssociation, [ RECIPE_ID , formattedIngredients], (err,results)=>{
             if(err) next(err)
             else res.json({id: RECIPE_ID})
           })
