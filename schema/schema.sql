@@ -1,4 +1,5 @@
 DROP TABLE userPurchases;
+DROP TABLE recipeStars;
 DROP TABLE recipeLists;
 DROP TABLE following;
 DROP TABLE recipes; 
@@ -19,6 +20,8 @@ CREATE TABLE userPurchases (
   itemID int NOT NULL,
   userID int NOT NULL,
   total int DEFAULT 1,
+  purchaseDate DATE,
+  quantity VARCHAR(255),
   PRIMARY KEY (itemID, userID),
   FOREIGN KEY (itemID) REFERENCES items (ID),
   FOREIGN KEY (userID) REFERENCES users (ID)
@@ -37,6 +40,7 @@ Create Table recipes (
   ID int AUTO_INCREMENT, 
   name VARCHAR(255) NOT NULL, 
   creatorID int NOT NULL,
+  dateCreated DATE,
   totalAdds int DEFAULT 0,
   Primary Key (ID),
   FOREIGN KEY (creatorID) REFERENCES users (ID),
@@ -49,6 +53,14 @@ Create Table recipeLists (
   CONSTRAINT PRIMARY KEY (recipeID, itemID),
   FOREIGN KEY (recipeID) REFERENCES recipes (ID),
   FOREIGN KEY (itemID) REFERENCES items (ID)
+);
+
+Create Table recipeStars (
+  recipeID int not null,
+  followerID int not null,
+  CONSTRAINT PRIMARY KEY (recipeID, followerID),
+  FOREIGN KEY (recipeID) REFERENCES recipes (ID),
+  FOREIGN KEY (followerID) REFERENCES users (ID)
 );
 
 INSERT INTO items (name) VALUES ('carrot');

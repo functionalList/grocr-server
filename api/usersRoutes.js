@@ -49,14 +49,16 @@ router.get('/friends/:userId', (req,res,next)=>{
 })
 
 //get recipes you follow
-router.get('/recipes', (req,res,next)=>{
+router.get('/recipes/:userId', (req,res,next)=>{
+
+  const userId = req.params.userId
 
   const getRecipes = `Select recipes.* from users
   join following on following.followerId = users.id
   join recipes on recipes.creatorID = following.creatorID
   where users.id = ?`
 
-  pool.query(getRecipes, [1], (err, results)=>{
+  pool.query(getRecipes, [userId], (err, results)=>{
     if(err) next(error)
     else{
       console.log(results)
